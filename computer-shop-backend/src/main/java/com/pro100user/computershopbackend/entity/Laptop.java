@@ -1,18 +1,145 @@
 package com.pro100user.computershopbackend.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.pro100user.computershopbackend.entity.enums.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "laptops")
-public class Laptop extends Product {
+@SuperBuilder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class Laptop extends Product implements Serializable {
 
-    @Column(name = "processor", nullable = false)
-    protected String processor;
+    //Процесор
+    @Column(name = "processor", nullable = false)//Процесор
+    private String processor;
+
+    @Column(name = "processor_performance")//Продуктивність процесору
+    private double processorPerformance;
+
+    @Column(name = "processor_amount_cores")//Кількість ядер
+    private int processorAmountCores;
+
+    @Column(name = "processor_amount_threads")//Кількість потоків
+    private int processorAmountThreads;
+
+    @Column(name = "processor_cache_size")//Об'єм кеша
+    private int processorCacheSize;
+
+
+
+    //Відеокарта
+    @Enumerated(EnumType.STRING)
+    @Column(name = "video_card_type")//Тип
+    private TypeVideoCard videoCardType;
+
+    @Column(name = "video_card")//Відеокарта
+    private String videoCard;
+
+    @Column(name = "video_card_amount_memory")//Обсяг відеопам'яті
+    private int videoCardAmountMemory;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "video_card_type_memory")//Тип відеопам'яті
+    private VideoCardTypeMemory videoCardTypeMemory;
+
+    @Column(name = "video_card_performance")//Продуктивність відеокарти
+    private int videoCardPerformance;
+
+
+
+    //Дисплей
+    @Column(name = "display_diagonal")//Діагональ
+    private double displayDiagonal;
+
+    @Column(name = "display_resolution")//Дозвіл
+    private String displayResolution;
+
+    @Column(name = "display_matrix_type")//Тип матриці
+    private String displayMatrixType;
+
+    @Column(name = "display_frequency")//Частота оновлення
+    private String displayFrequency;
+
+    @Column(name = "display_coverage")//Покриття
+    private String displayCoverage;
+
+    @Column(name = "display_information")//Додатково
+    private String displayInformation;
+
+
+
+    //Оперативна пам'ять
+    @Column(name = "RAM_volume")//Обсяг
+    private int RAMVolume;
+
+    @Column(name = "RAM_frequency")//Частота
+    private double RAMFrequency;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "RAM_type")//Тип
+    private RAMTypes RAMType;
+
+    @Column(name = "RAM_slots")//Кількість слотів
+    private int RAMSlots;
+
+    @Column(name = "RAM_max")//Максимальний підтримуваний обсяг
+    private int RAMMax;
+
+    @Column(name = "RAM_information")//Додатково
+    private String RAMInformation;
+
+
+
+    //Внутрішній накопичувач
+    @Enumerated(EnumType.STRING)
+    @Column(name = "drive_type", nullable = false)//Тип
+    private DriveType driveType;
+
+    @Column(name = "drive_volume_HDD")//Об'єм HDD
+    private String driveVolumeHDD;
+
+    @Column(name = "drive_volume_SSD")//Об'єм HDD
+    private String driveVolumeSSD;
+
+
+
+    //Порти та бездротові технології
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = Gate.class)
+    @CollectionTable(
+            name = "laptop_gates",
+            joinColumns = @JoinColumn(name = "laptop_id", referencedColumnName = "id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gate", nullable = false)//Порти
+    private List<Gate> gates = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = Technology.class)
+    @CollectionTable(
+            name = "laptop_wireless_technology",
+            joinColumns = @JoinColumn(name = "laptop_id", referencedColumnName = "id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "technology", nullable = false)//Бездротові технології
+    private List<Technology> wirelessTechnology = new ArrayList<>();
+
+
+
+    //Мультимедіа
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = Multimedia.class)
+    @CollectionTable(
+            name = "laptop_multimedia",
+            joinColumns = @JoinColumn(name = "laptop_id", referencedColumnName = "id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "multimedia")//Мультимедіа
+    private List<String> multimedia = new ArrayList<>();
 }
