@@ -83,93 +83,108 @@ const ComputerDetails = () => {
                                 <img src={"http://localhost:8080/files/" + computer.image} alt={computer.name}/>
                             </div>
                             <div style={{border: "1px solid blue"}}>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Ціна : {computer.price} грн.
                                 </Typography>
                                 <hr/>
                                 <Typography variant="h5" component="div">
+                                    Процесор
+                                </Typography>
+                                <Typography variant="h6" component="div">
                                     Процессор : {computer.processor}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Продуктивність процесору : {computer.processorPerformance}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Кількість ядер : {computer.processorAmountCores}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Тактова частота : {computer.processorFrequency}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Кількість потоків : {computer.processorAmountThreads}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Об'єм кеша : {computer.processorCacheSize}
                                 </Typography>
                                 <hr/>
                                 <Typography variant="h5" component="div">
+                                    Відеокарта
+                                </Typography>
+                                <Typography variant="h6" component="div">
                                     Тип відеокарти : {computer.videoCardType}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Відеокарта : {computer.videoCard}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Обсяг відеопам'яті : {computer.videoCardAmountMemory}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Тип відеопам'яті : {computer.videoCardTypeMemory}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Продуктивність відеокарти : {computer.videoCardPerformance}
                                 </Typography>
                                 <hr/>
                                 <Typography variant="h5" component="div">
+                                    Материнська плата
+                                </Typography>
+                                <Typography variant="h6" component="div">
                                     Материнська плата : {computer.motherboard}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Максимальна кількість слотів пам'яті : {computer.motherboardMemorySlots}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Максимальний обсяг пам'яті : {computer.motherboardMaxAmountMemory}
                                 </Typography>
                                 <hr/>
                                 <Typography variant="h5" component="div">
+                                    Оперативна пам'ять
+                                </Typography>
+                                <Typography variant="h6" component="div">
                                     Обсяг оперативної пам'яті : {computer.RAMVolume}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Частота оперативної пам'яті : {computer.RAMFrequency}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Тип оперативної пам'яті : {computer.RAMType}
                                 </Typography>
                                 <hr/>
                                 <Typography variant="h5" component="div">
-                                    Обсяг оперативної пам'яті : {computer.driveType}
+                                    Привід
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
+                                    Тип приводу : {computer.driveType}
+                                </Typography>
+                                <Typography variant="h6" component="div">
                                     Об'єм HDD : {computer.driveVolumeHDD}
                                 </Typography>
-                                <Typography variant="h5" component="div">
+                                <Typography variant="h6" component="div">
                                     Об'єм SSD : {computer.driveVolumeSSD}
                                 </Typography>
-
-                                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                <hr/>
+                                <div style={{display: "flex", justifyContent: "space-between", margin: 2}}>
+                                    {
+                                        roles && roles.includes("ROLE_ADMIN") &&
+                                        <div /*style={{display: "flex", justifyContent: "space-between", marginTop: 5}}*/>
+                                            {/*<Button variant="contained" color="warning" onClick={() => setOpen(true)}>
+                                            Редагувати
+                                        </Button>*/}
+                                            <Button variant="contained" color="error"
+                                                    onClick={() => deleteBook(computer.id)}>
+                                                Видалити
+                                            </Button>
+                                        </div>
+                                    }
                                     <Button variant="contained" color="success"
                                             onClick={() => addToBasket(computer.id)}>
                                         Додати в кошик
                                     </Button>
                                 </div>
-                                {
-                                    roles && roles.includes("ROLE_ADMIN") &&
-                                    <div style={{display: "flex", justifyContent: "space-between", marginTop: 5}}>
-                                        {/*<Button variant="contained" color="warning" onClick={() => setOpen(true)}>
-                                            Редагувати
-                                        </Button>*/}
-                                        <Button variant="contained" color="error"
-                                                onClick={() => deleteBook(computer.id)}>
-                                            Видалити
-                                        </Button>
-                                    </div>
-                                }
                             </div>
                         </div>
                     </div>
