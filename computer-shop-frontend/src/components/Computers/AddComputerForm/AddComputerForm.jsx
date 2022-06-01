@@ -654,7 +654,7 @@ const AddComputerForm = ({setBooks, setOpen}) => {
                         marginTop: 2
                     }}
                 >
-                    Додати книжку
+                    Додати комп'ютер
                 </Button>
             </form>
         </div>
