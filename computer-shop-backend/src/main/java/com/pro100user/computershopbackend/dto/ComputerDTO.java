@@ -1,0 +1,60 @@
+package com.pro100user.computershopbackend.dto;
+
+import com.pro100user.computershopbackend.entity.enums.DriveType;
+import com.pro100user.computershopbackend.entity.enums.RAMTypes;
+import com.pro100user.computershopbackend.entity.enums.TypeVideoCard;
+import com.pro100user.computershopbackend.entity.enums.VideoCardTypeMemory;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
+public class ComputerDTO extends ProductDTO {
+
+    private String processor;
+
+    private int processorPerformance;
+
+    private int processorAmountCores;
+
+    private double processorFrequency;
+
+    private int processorAmountThreads;
+
+    private double processorCacheSize;
+
+
+    private TypeVideoCard videoCardType;
+
+    private String videoCard;
+
+    private int videoCardAmountMemory;
+
+    private VideoCardTypeMemory videoCardTypeMemory;
+
+    private int videoCardPerformance;
+
+
+    private String motherboard;
+
+    private int motherboardMemorySlots;
+
+    private int motherboardMaxAmountMemory;
+
+
+    private int RAMVolume;
+
+    private double RAMFrequency;
+
+    private RAMTypes RAMType;
+
+
+    private DriveType driveType;
+
+    private int driveVolumeHDD;
+
+    private int driveVolumeSSD;
+}
