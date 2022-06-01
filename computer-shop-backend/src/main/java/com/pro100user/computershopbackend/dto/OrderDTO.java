@@ -4,6 +4,7 @@ import com.pro100user.computershopbackend.entity.enums.Status;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +17,9 @@ public class OrderDTO {
 
     private UserDTO user;
 
-    //private ServiceDTO service;
+    private List<ProductDTO> products;
+
+    private double totalPrice;
 
     private Status status;
 

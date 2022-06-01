@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 import java.util.List;
 
 
-@Mapper//(uses = {UserMapper.class, ProductMapper.class})
+@Mapper(uses = {UserMapper.class, ProductMapper.class})
 public interface OrderMapper {
 
     /*@Mappings({
@@ -24,6 +24,7 @@ public interface OrderMapper {
             @Mapping(source = "productId", target = "product.id")
     })*/
     Order toEntity(OrderUpdateDTO dto);
+
 
     OrderDTO toOrderDTO(Order order);
     List<OrderDTO> toListOrderDTO(List<Order> orders);

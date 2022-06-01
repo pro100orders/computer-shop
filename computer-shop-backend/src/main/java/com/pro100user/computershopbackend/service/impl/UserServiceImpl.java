@@ -1,16 +1,17 @@
 package com.pro100user.computershopbackend.service.impl;
 
-import com.pro100user.computershopbackend.dto.ProductDTO;
-import com.pro100user.computershopbackend.dto.UserCreateDTO;
-import com.pro100user.computershopbackend.dto.UserDTO;
-import com.pro100user.computershopbackend.dto.UserUpdateDTO;
+import com.pro100user.computershopbackend.dto.*;
 import com.pro100user.computershopbackend.entity.Basket;
+import com.pro100user.computershopbackend.entity.Order;
 import com.pro100user.computershopbackend.entity.Product;
 import com.pro100user.computershopbackend.entity.User;
 import com.pro100user.computershopbackend.entity.enums.Role;
+import com.pro100user.computershopbackend.entity.enums.Status;
+import com.pro100user.computershopbackend.mapper.OrderMapper;
 import com.pro100user.computershopbackend.mapper.ProductMapper;
 import com.pro100user.computershopbackend.mapper.UserMapper;
 import com.pro100user.computershopbackend.repository.BasketRepository;
+import com.pro100user.computershopbackend.repository.OrderRepository;
 import com.pro100user.computershopbackend.repository.ProductRepository;
 import com.pro100user.computershopbackend.repository.UserRepository;
 import com.pro100user.computershopbackend.service.UserService;
@@ -39,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private final ProductMapper productMapper;
 
     private final BasketRepository basketRepository;
+    private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -149,5 +152,34 @@ public class UserServiceImpl implements UserService {
             basketRepository.save(basket);
         }
         return productMapper.toProductDTO(product);
+    }
+
+    @Override
+    public List<OrderDTO> getOrders(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return orderMapper.toListOrderDTO(
+                user.getOrders()
+        );
+    }
+
+    @Override
+    public boolean toOrder(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        if(user.getBasket() == null) {
+            return false;
+        } else if(user.getBasket().getProducts().isEmpty()) {
+            return false;
+        }
+        Order order = Order.builder()
+                .user(user)
+                .products(user.getBasket().getProducts())
+                .totalPrice(user.getBasket().getTotalPrice())
+                .status(Status.Оформлено)
+                .build();
+        orderRepository.save(order);
+        user.getBasket().setProducts(new ArrayList<>());
+        user.getBasket().setTotalPrice(0);
+        basketRepository.save(user.getBasket());
+        return true;
     }
 }

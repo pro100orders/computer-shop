@@ -1,9 +1,6 @@
 package com.pro100user.computershopbackend.service;
 
-import com.pro100user.computershopbackend.dto.ProductDTO;
-import com.pro100user.computershopbackend.dto.UserCreateDTO;
-import com.pro100user.computershopbackend.dto.UserDTO;
-import com.pro100user.computershopbackend.dto.UserUpdateDTO;
+import com.pro100user.computershopbackend.dto.*;
 import com.pro100user.computershopbackend.entity.Product;
 import com.pro100user.computershopbackend.entity.User;
 
@@ -22,4 +19,6 @@ public interface UserService {
 
     List<ProductDTO> getBasket(Long userId);
     ProductDTO toggleBasket(Long userId, Long productId);
+    List<OrderDTO> getOrders(Long userId);
+    boolean toOrder(Long userId);
 }

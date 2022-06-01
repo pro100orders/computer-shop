@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +40,10 @@ public class Order implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> products = new ArrayList<>();
+
+    @NotNull
+    @Column(name = "total_price", nullable = false)
+    private double totalPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

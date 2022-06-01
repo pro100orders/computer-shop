@@ -1,6 +1,7 @@
 package com.pro100user.computershopbackend.controller;
 
 import com.pro100user.computershopbackend.annotation.CurrentUser;
+import com.pro100user.computershopbackend.dto.OrderDTO;
 import com.pro100user.computershopbackend.dto.ProductDTO;
 import com.pro100user.computershopbackend.dto.UserDTO;
 import com.pro100user.computershopbackend.dto.UserUpdateDTO;
@@ -59,5 +60,19 @@ public class UserController {
             @RequestBody Long bookId
     ) {
         return userService.toggleBasket(userSecurity.getId(), bookId);
+    }
+
+    @GetMapping("/orders")
+    public List<OrderDTO> getOrders(
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.getOrders(userSecurity.getId());
+    }
+
+    @PostMapping("/orders")
+    public boolean addOrders(
+            @CurrentUser UserSecurity userSecurity
+    ) {
+        return userService.toOrder(userSecurity.getId());
     }
 }
