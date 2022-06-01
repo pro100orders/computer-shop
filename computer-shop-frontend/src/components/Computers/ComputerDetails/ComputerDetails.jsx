@@ -82,7 +82,7 @@ const ComputerDetails = () => {
                             <div>
                                 <img src={"http://localhost:8080/files/" + computer.image} alt={computer.name}/>
                             </div>
-                            <div style={{border: "1px solid blue"}}>
+                            <div style={{border: "1px solid blue", padding: 20}}>
                                 <Typography variant="h6" component="div">
                                     Ціна : {computer.price} грн.
                                 </Typography>
