@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Button, Container, Typography} from "@mui/material";
 import $api from "../../http";
 import {toastr} from "react-redux-toastr";
-import ComputersList from "../../components/Computers/ComputersList/ComputersList";
 import ProductsList from "../../components/Products/ProductsList/ProductsList";
 
 const Basket = () => {
@@ -22,6 +21,21 @@ const Basket = () => {
             });
     }, [])
 
+    const buy = () => {
+        $api.post("/user/orders")
+            .then(response => {
+                if (response.data === true) {
+                    setProducts([]);
+                    toastr.success("Computer shop", "Замовлення оформлено");
+                } else {
+                    toastr.error("Computer shop", "Виникли технічні проблеми");
+                }
+            })
+            .catch(reason => {
+                toastr.error("Computer shop", "Виникли технічні проблеми");
+            })
+    }
+
     return (
         <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}} style={{minHeight: "100vh"}}>
             <Typography variant="h2" component="div">
@@ -33,7 +47,7 @@ const Basket = () => {
             {
                 products.length !== 0 &&
                 <div style={{display: "flex", justifyContent: "flex-end"}}>
-                    <Button variant="contained" color="success">Оформити замовлення</Button>
+                    <Button variant="contained" color="success" onClick={buy()}>Оформити замовлення</Button>
                 </div>
             }
         </Container>

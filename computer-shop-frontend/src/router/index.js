@@ -8,6 +8,7 @@ import Basket from "../pages/Basket/Basket";
 import ComputerDetails from "../components/Computers/ComputerDetails/ComputerDetails";
 import LoginForm from "../components/LoginForm/LoginForm";
 import RegistrationForm from "../components/RegistrationForm/RegistrationForm";
+import Orders from "../pages/Orders/Orders";
 
 const AppRoutes = () => {
 
@@ -36,6 +37,7 @@ const AppRoutes = () => {
                 {path: "/profile", component: Profile},
                 {path: "/wish-list", component: WishList},
                 {path: "/basket", component: Basket},
+                {path: "/orders", component: Orders},
             ];
 
             setRoutes(routes => routes = routes.concat(userRoutes));
