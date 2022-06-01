@@ -47,7 +47,7 @@ const Basket = () => {
             {
                 products.length !== 0 &&
                 <div style={{display: "flex", justifyContent: "flex-end"}}>
-                    <Button variant="contained" color="success" onClick={buy()}>Оформити замовлення</Button>
+                    <Button variant="contained" color="success" onClick={() => buy()}>Оформити замовлення</Button>
                 </div>
             }
         </Container>
