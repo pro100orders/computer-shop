@@ -44,7 +44,9 @@ const AppRoutes = () => {
         }
 
         if (roles && roles.includes("ROLE_ADMIN")) {
-            const adminRoutes = [];
+            const adminRoutes = [
+                {path: "/admin", component: Home},
+            ];
 
             setRoutes(routes => routes = routes.concat(adminRoutes));
         }

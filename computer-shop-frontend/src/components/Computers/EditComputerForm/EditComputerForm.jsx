@@ -6,7 +6,7 @@ import {toastr} from "react-redux-toastr";
 import {Autocomplete, Button, MenuItem, Select, TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
-const EditComputerForm = ({book, setOpen}) => {
+const EditComputerForm = ({computer, setOpen}) => {
 
     const {handleSubmit, control, setValue} = useForm({
         mode: 'onBlur'
@@ -15,21 +15,52 @@ const EditComputerForm = ({book, setOpen}) => {
         control
     });
 
-    const dispatch = useDispatch();
-
     const navigate = useNavigate();
 
-    const [authors, setAuthors] = useState([]);
+    useEffect(() => {
+        setValue("id", computer.id);
+        setValue("name", computer.name);
+        setValue("price", computer.price);
+        setValue("amount", computer.amount);
 
-    const categories = useSelector(state => state.category.categories);
-    const [isLoading, setLoading] = useState(true);
+        setValue("processor", computer.processor);
+        setValue("processorPerformance", computer.processorPerformance);
+        setValue("processorAmountCores", computer.processorAmountCores);
+        setValue("processorFrequency", computer.processorFrequency);
+        setValue("processorAmountThreads", computer.processorAmountThreads);
+        setValue("processorCacheSize", computer.processorCacheSize);
 
-    const [languages, setLanguages] = useState([]);
+        setValue("videoCardType", computer.videoCardType);
+        setValue("videoCard", computer.videoCard);
+        setValue("videoCardAmountMemory", computer.videoCardAmountMemory);
+        setValue("videoCardTypeMemory", computer.videoCardTypeMemory);
+        setValue("videoCardPerformance", computer.videoCardPerformance);
+
+        setValue("motherboard", computer.motherboard);
+        setValue("motherboardMemorySlots", computer.motherboardMemorySlots);
+        setValue("motherboardMaxAmountMemory", computer.motherboardMaxAmountMemory);
+
+        setValue("RAMVolume", computer.RAMVolume);
+        setValue("RAMFrequency", computer.RAMFrequency);
+        setValue("RAMType", computer.RAMType);
+
+        setValue("driveType", computer.driveType);
+        setValue("driveVolumeHDD", computer.driveVolumeHDD);
+        setValue("driveVolumeSSD", computer.driveVolumeSSD);
+
+        setValue("description", computer.description);
+        setValue("additionally", computer.additionally);
+    }, []);
+
+    const [videoCardTypes, setVideoCardTypes] = useState([]);
+    const [videoCardTypeMemoryes, setVideoCardTypeMemoryes] = useState([]);
+    const [RAMTypes, setRAMTypes] = useState([]);
+    const [driveTypes, setDriveTypes] = useState([]);
 
     useEffect(() => {
-        $api.get("/authors")
+        $api.get("/computers/video-card-types")
             .then(response => {
-                setAuthors(response.data);
+                setVideoCardTypes(response.data);
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -37,10 +68,9 @@ const EditComputerForm = ({book, setOpen}) => {
     }, []);
 
     useEffect(() => {
-        $api.get("/categories")
+        $api.get("/computers/video-card-type-memories")
             .then(response => {
-                dispatch({type: "SET_CATEGORIES", payload: response.data});
-                setLoading(false);
+                setVideoCardTypeMemoryes(response.data);
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -48,9 +78,9 @@ const EditComputerForm = ({book, setOpen}) => {
     }, []);
 
     useEffect(() => {
-        $api.get("/books/languages")
+        $api.get("/computers/ram-types")
             .then(response => {
-                setLanguages(response.data);
+                setRAMTypes(response.data);
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -58,49 +88,39 @@ const EditComputerForm = ({book, setOpen}) => {
     }, []);
 
     useEffect(() => {
-        setValue("id", book.id);
-        setValue("name", book.name);
-        setValue("authors", book.authors);
-        setSelectedAuthors(book.authors);
-        setValue("price", book.price);
-        setValue("categoryId", book.category.id);
-        setValue("publishing", book.publishing);
-        setValue("bookSeries", book.bookSeries);
-        setValue("amount", book.amount);
-        setValue("language", book.language);
-        setValue("yearPublication", book.yearPublication);
-        setValue("translator", book.translator);
-        setValue("numberPages", book.numberPages);
+        $api.get("/computers/drive-types")
+            .then(response => {
+                setDriveTypes(response.data);
+            })
+            .catch(reason => {
+                toastr.error("Computer shop", "Виникли технічні проблеми");
+            });
     }, []);
 
-    const onSubmit = (book) => {
-        book.authors = selectedAuthors.authors;
-        console.log(book);
-        $api.put("/books", book)
+    const onSubmit = (computer) => {
+        console.log(computer);
+        $api.put("/computers", computer)
             .then(response => {
                 if (file != null) {
                     const fd = new FormData();
                     fd.append("image", file, file.name);
-                    $api.post("/books/photo/" + response.data.id, fd)
+                    $api.post("/computers/image/" + response.data.id, fd)
                         .then(response1 => {
                             setOpen(false);
-                            navigate("/books");
+                            navigate("/computers");
                         })
                         .catch(reason => {
                             console.log(reason.response.data.error);
                         })
-                }
-                else {
+                } else {
                     setOpen(false);
-                    navigate("/books");
+                    navigate("/computers");
                 }
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     };
-
-    const [selectedAuthors, setSelectedAuthors] = useState([]);
 
     const [file, setFile] = useState(null);
 
@@ -110,234 +130,558 @@ const EditComputerForm = ({book, setOpen}) => {
 
     return (
         <div className='add-book-form' style={{width: "600px"}}>
-            <form className="add-book-form__form" onSubmit={handleSubmit(onSubmit)}>
-                <Controller
-                    control={control}
-                    name="name"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <TextField
-                            label="Назва"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.name?.message}
-                            helperText={errors.name?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="authors"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <Autocomplete
-                            multiple
-                            label="Автори"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(event, authors) =>
-                                setSelectedAuthors(prevStare => prevStare = {...prevStare, authors})
-                            }
-                            error={!!errors.authors?.message}
-                            helperText={errors.authors?.message}
-                            options={authors}
-                            getOptionLabel={(option) => {
-                                return option.surname + " " + option.name
-                            }}
-                            filterSelectedOptions
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Автори"
-                                    placeholder="Автори"
-                                />
-                            )}
-                        />
-                    )}
-                />
-                <div>
-                    <p>Фото:</p>
-                    <input type={"file"} onChange={fileSelectorHandler}/>
+            <form className="add-book-form__form" onSubmit={handleSubmit(onSubmit)}
+                  style={{display: "flex", flexWrap: "wrap"}}>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({field}) => (
+                            <TextField
+                                label="Назва"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.name?.message}
+                                helperText={errors.name?.message}
+                            />
+                        )}
+                    />
                 </div>
-                <Controller
-                    control={control}
-                    name="price"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <TextField
-                            label="Ціна"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.price?.message}
-                            helperText={errors.price?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="categoryId"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <Select
-                            label="Категорія"
-                            size="small"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.categoryId?.message}
-                        >
-                            {
-                                !isLoading &&
-                                categories.map((category) => (
-                                        <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                <div className={"formInput"}>
+                    <p>Фото:</p>
+                    <input variant={"filled"}type={"file"}
+                           onChange={fileSelectorHandler}/>
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="price"
+                        render={({field}) => (
+                            <TextField
+                                label="Ціна"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.price?.message}
+                                helperText={errors.price?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="amount"
+                        render={({field}) => (
+                            <TextField
+                                label="Кількість"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.amount?.message}
+                                helperText={errors.amount?.message}
+                            />
+                        )}
+                    />
+                </div>
+
+
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="processor"
+                        render={({field}) => (
+                            <TextField
+                                label="Процесор"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.processor?.message}
+                                helperText={errors.processor?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="processorPerformance"
+                        render={({field}) => (
+                            <TextField
+                                label="Продуктивність процесору"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.processorPerformance?.message}
+                                helperText={errors.processorPerformance?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="processorAmountCores"
+                        render={({field}) => (
+                            <TextField
+                                label="Кількість ядер"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.processorAmountCores?.message}
+                                helperText={errors.processorAmountCores?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="processorFrequency"
+                        render={({field}) => (
+                            <TextField
+                                label="Тактова частота"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.processorFrequency?.message}
+                                helperText={errors.processorFrequency?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="processorAmountThreads"
+                        render={({field}) => (
+                            <TextField
+                                label="Кількість потоків"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.processorAmountThreads?.message}
+                                helperText={errors.processorAmountThreads?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="processorCacheSize"
+                        render={({field}) => (
+                            <TextField
+                                label="Об'єм кеша"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.processorCacheSize?.message}
+                                helperText={errors.processorCacheSize?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="videoCardType"
+                        render={({field}) => (
+                            <Select
+                                label="Тип відеокарти"
+                                size="small"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.videoCardType?.message}
+                            >
+                                {
+                                    videoCardTypes &&
+                                    videoCardTypes.map((videoCardType) => (
+                                            <MenuItem key={videoCardType} value={videoCardType}>{videoCardType}</MenuItem>
+                                        )
                                     )
-                                )
-                            }
-                        </Select>
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="publishing"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <TextField
-                            label="Видавництво"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.publishing?.message}
-                            helperText={errors.publishing?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="bookSeries"
-                    render={({field}) => (
-                        <TextField
-                            label="Серія книг"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.bookSeries?.message}
-                            helperText={errors.bookSeries?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="amount"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <TextField
-                            label="Кількість"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.amount?.message}
-                            helperText={errors.amount?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="language"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <Select
-                            label="Мова"
-                            size="small"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.language?.message}
-                        >
-                            {
-                                !isLoading &&
-                                languages.map((language) => (
-                                        <MenuItem key={language} value={language}>{language}</MenuItem>
+                                }
+                            </Select>
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="videoCard"
+                        render={({field}) => (
+                            <TextField
+                                label="Відеокарта"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.videoCard?.message}
+                                helperText={errors.videoCard?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="videoCardAmountMemory"
+                        render={({field}) => (
+                            <TextField
+                                label="Обсяг відеопам'яті"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.videoCardPerformance?.message}
+                                helperText={errors.videoCardPerformance?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="videoCardTypeMemory"
+                        render={({field}) => (
+                            <Select
+                                label="Тип відеопам'яті"
+                                size="small"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.videoCardTypeMemory?.message}
+                            >
+                                {
+                                    videoCardTypeMemoryes &&
+                                    videoCardTypeMemoryes.map((videoCardTypeMemory) => (
+                                            <MenuItem key={videoCardTypeMemory}
+                                                      value={videoCardTypeMemory}>{videoCardTypeMemory}</MenuItem>
+                                        )
                                     )
-                                )
-                            }
-                        </Select>
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="yearPublication"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <TextField
-                            label="Рік видавництва"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.yearPublication?.message}
-                            helperText={errors.yearPublication?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="translator"
-                    render={({field}) => (
-                        <TextField
-                            label="Перекладач"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.translator?.message}
-                            helperText={errors.translator?.message}
-                        />
-                    )}
-                />
-                <Controller
-                    control={control}
-                    name="numberPages"
-                    //rules={{required: "Заповніть це поле"}}
-                    render={({field}) => (
-                        <TextField
-                            label="Кількість сторінок"
-                            size="small"
-                            margin="normal"
-                            className="add-book-form__input"
-                            fullWidth={true}
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            error={!!errors.numberPages?.message}
-                            helperText={errors.numberPages?.message}
-                        />
-                    )}
-                />
+                                }
+                            </Select>
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="videoCardPerformance"
+                        render={({field}) => (
+                            <TextField
+                                label="Продуктивність відеокарти"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.videoCardPerformance?.message}
+                                helperText={errors.videoCardPerformance?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="motherboard"
+                        render={({field}) => (
+                            <TextField
+                                label="Материнська плата"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.motherboard?.message}
+                                helperText={errors.motherboard?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="motherboardMemorySlots"
+                        render={({field}) => (
+                            <TextField
+                                label="Макс. кількість слотів пам'яті на материнці"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.motherboardMemorySlots?.message}
+                                helperText={errors.motherboardMemorySlots?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="motherboardMaxAmountMemory"
+                        render={({field}) => (
+                            <TextField
+                                label="Макс. обсяг пам'яті на материнці"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.motherboardMaxAmountMemory?.message}
+                                helperText={errors.motherboardMaxAmountMemory?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="RAMVolume"
+                        render={({field}) => (
+                            <TextField
+                                label="Обсяг оперативної пам'яті"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.RAMVolume?.message}
+                                helperText={errors.RAMVolume?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="RAMFrequency"
+                        render={({field}) => (
+                            <TextField
+                                label="Частота оперативної пам'яті"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.RAMFrequency?.message}
+                                helperText={errors.RAMFrequency?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="ramType"
+                        render={({field}) => (
+                            <Select
+                                label="Тип оперативної пам'яті"
+                                size="small"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.ramType?.message}
+                            >
+                                {
+                                    RAMTypes &&
+                                    RAMTypes.map((RAMType) => (
+                                            <MenuItem key={RAMType} value={RAMType}>{RAMType}</MenuItem>
+                                        )
+                                    )
+                                }
+                            </Select>
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="driveType"
+                        render={({field}) => (
+                            <Select
+                                label="Тип приводу"
+                                size="small"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.driveType?.message}
+                            >
+                                {
+                                    driveTypes &&
+                                    driveTypes.map((driveType) => (
+                                            <MenuItem key={driveType} value={driveType}>{driveType}</MenuItem>
+                                        )
+                                    )
+                                }
+                            </Select>
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="driveVolumeHDD"
+                        render={({field}) => (
+                            <TextField
+                                label="Об'єм HDD"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.driveVolumeHDD?.message}
+                                helperText={errors.driveVolumeHDD?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="driveVolumeSSD"
+                        render={({field}) => (
+                            <TextField
+                                label="Об'єм SSD"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.driveVolumeSSD?.message}
+                                helperText={errors.driveVolumeSSD?.message}
+                            />
+                        )}
+                    />
+                </div>
+
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="description"
+                        render={({field}) => (
+                            <TextField
+                                label="Опис"
+                                multiple
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.description?.message}
+                                helperText={errors.description?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="additionally"
+                        render={({field}) => (
+                            <TextField
+                                label="Додатково"
+                                multiple
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.additionally?.message}
+                                helperText={errors.additionally?.message}
+                            />
+                        )}
+                    />
+                </div>
                 <Button
                     type="submit"
                     variant="contained"
@@ -347,12 +691,11 @@ const EditComputerForm = ({book, setOpen}) => {
                         marginTop: 2
                     }}
                 >
-                    Відредагувати
+                    Редагувати комп'ютер
                 </Button>
             </form>
         </div>
-    )
-        ;
+    );
 };
 
 export default EditComputerForm;

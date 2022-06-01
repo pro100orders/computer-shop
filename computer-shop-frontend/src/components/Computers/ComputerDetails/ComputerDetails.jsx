@@ -41,7 +41,7 @@ const ComputerDetails = () => {
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Комп'ютер успішно додана до кошика");
+                toastr.success("Computer shop", "Комп'ютер успішно додано до кошика");
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -52,7 +52,7 @@ const ComputerDetails = () => {
         $api.delete("/computers/" + id)
             .then(response => {
                 if (response.data === true) {
-                    toastr.success("Computer shop", "Комп'ютер успішно видалена");
+                    toastr.success("Computer shop", "Комп'ютер успішно видалено");
                     navigate("/computers");
                 }
             })
@@ -73,7 +73,7 @@ const ComputerDetails = () => {
                         {
                             open &&
                             <MyModal open={open} setOpen={setOpen}
-                                     children={<EditComputerForm book={computer} setOpen={setOpen}/>}/>
+                                     children={<EditComputerForm computer={computer} setOpen={setOpen}/>}/>
                         }
                         <Typography variant="h2" component="div">
                             {computer.name}
@@ -167,24 +167,23 @@ const ComputerDetails = () => {
                                     Об'єм SSD : {computer.driveVolumeSSD}
                                 </Typography>
                                 <hr/>
-                                <div style={{display: "flex", justifyContent: "space-between", margin: 2}}>
-                                    {
-                                        roles && roles.includes("ROLE_ADMIN") &&
-                                        <div /*style={{display: "flex", justifyContent: "space-between", marginTop: 5}}*/>
-                                            {/*<Button variant="contained" color="warning" onClick={() => setOpen(true)}>
-                                            Редагувати
-                                        </Button>*/}
-                                            <Button variant="contained" color="error"
-                                                    onClick={() => deleteBook(computer.id)}>
-                                                Видалити
-                                            </Button>
-                                        </div>
-                                    }
-                                    <Button variant="contained" color="success"
-                                            onClick={() => addToBasket(computer.id)}>
+                                <div style={{display: "flex", justifyContent: "flex-end", margin: 2}}>
+                                    <Button variant="contained" color="success" onClick={() => addToBasket(computer.id)}>
                                         Додати в кошик
                                     </Button>
                                 </div>
+                                {
+                                    roles && roles.includes("ROLE_ADMIN") &&
+                                    <div style={{display: "flex", justifyContent: "space-between", margin: 2}}>
+                                        <Button variant="contained" color="warning" onClick={() => setOpen(true)}>
+                                            Редагувати
+                                        </Button>
+                                        <Button variant="contained" color="error"
+                                                onClick={() => deleteBook(computer.id)}>
+                                            Видалити
+                                        </Button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
