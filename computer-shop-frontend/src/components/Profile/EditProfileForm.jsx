@@ -22,7 +22,7 @@ const EditProfileForm = ({setModalProfile, setModalProfileEdit}) => {
                 setOldUser(response.data);
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 

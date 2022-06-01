@@ -33,14 +33,14 @@ const LoginForm = () => {
                 const token = localStorage.getItem('token') || '';
                 const user = jwt(token);
                 dispatch({type: "SET_AUTH", payload: {token: token, user: user}});
-                toastr.success('Bookstore', "Авторизація успішна");
+                toastr.success('Computer shop', "Авторизація успішна");
                 navigate('/');
             })
             .catch(reason => {
                 if (reason.response.status === 403) {
                     setError(true);
                 } else {
-                    toastr.error("Bookstore", "Виникли технічні проблеми");
+                    toastr.error("Computer shop", "Виникли технічні проблеми");
                 }
             });
     };

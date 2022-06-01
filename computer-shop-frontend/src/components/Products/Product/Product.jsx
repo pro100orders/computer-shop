@@ -12,27 +12,27 @@ const Product = ({product, setProducts, isBasket}) => {
 
     const navigateToLogin = (i) => {
         navigate("/login");
-        toastr.info("Store", "Щоб добавити в кошик потрібно авторизуватись");
+        toastr.info("Computer shop", "Щоб добавити в кошик потрібно авторизуватись");
     }
 
     const deleteWithBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
                 setProducts(prevState => prevState.filter(product => product.id !== id));
-                toastr.success("Store", "Книжка успішно видалена з кошика");
+                toastr.success("Computer shop", "Книжка успішно видалена з кошика");
             })
             .catch(reason => {
-                toastr.error("Store", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }
 
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Bookstore", "Книжка успішно додана до кошика");
+                toastr.success("Computer shop", "Книжка успішно додана до кошика");
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }
 

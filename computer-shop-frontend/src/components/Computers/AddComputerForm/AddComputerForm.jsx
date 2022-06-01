@@ -26,7 +26,7 @@ const AddComputerForm = ({setBooks, setOpen}) => {
                 setVideoCardTypes(response.data);
             })
             .catch(reason => {
-                toastr.error("Shop", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
@@ -36,7 +36,7 @@ const AddComputerForm = ({setBooks, setOpen}) => {
                 setVideoCardTypeMemoryes(response.data);
             })
             .catch(reason => {
-                toastr.error("Shop", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
@@ -46,7 +46,7 @@ const AddComputerForm = ({setBooks, setOpen}) => {
                 setRAMTypes(response.data);
             })
             .catch(reason => {
-                toastr.error("Shop", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
@@ -56,7 +56,7 @@ const AddComputerForm = ({setBooks, setOpen}) => {
                 setDriveTypes(response.data);
             })
             .catch(reason => {
-                toastr.error("Shop", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
@@ -81,7 +81,7 @@ const AddComputerForm = ({setBooks, setOpen}) => {
                 }
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     };
 

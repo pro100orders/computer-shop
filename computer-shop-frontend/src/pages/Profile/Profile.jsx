@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import $api from "../../http";
 import {toastr} from "react-redux-toastr";
 import {Button, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 const Profile = ({setModalProfile, setModalProfileEdit}) => {
 
     const [user, setUser] = useState({});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         $api.get('/user/profile')
@@ -13,12 +16,15 @@ const Profile = ({setModalProfile, setModalProfileEdit}) => {
                 setUser(response.data);
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
     return (
-        <div>
+        <div style={{width: 400, height: 800,  margin: "auto"}}>
+            {
+
+            }
             <Typography variant="h3" component="div">
                 Мій профіль
             </Typography>
@@ -49,22 +55,6 @@ const Profile = ({setModalProfile, setModalProfileEdit}) => {
                     Адресса : {user.address}
                 </Typography>
             }
-            <div style={{marginTop: 2}}>
-                <Button variant="contained" color="primary" onClick={e => {
-                    setModalProfile(false);
-                    setModalProfileEdit(true);
-                }}>
-                    Редагувати профіль
-                </Button>
-            </div>
-            <div style={{marginTop: 2}}>
-                <Button variant="contained" color="primary" onClick={e => {
-                    setModalProfile(false);
-                    setModalProfileEdit(true);
-                }}>
-                    Мої замовлення
-                </Button>
-            </div>
         </div>
     );
 };

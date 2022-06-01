@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import $api from "../../../http";
-import {Button, Checkbox, Container, Typography} from "@mui/material";
+import {Button, Container, Typography} from "@mui/material";
 import {toastr} from "react-redux-toastr";
-import {Favorite, FavoriteBorder} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import EditComputerForm from "../EditComputerForm/EditComputerForm";
-import AddComputerForm from "../AddComputerForm/AddComputerForm";
 import MyModal from "../../UI/Modal/MyModal";
 
 const ComputerDetails = () => {
@@ -24,42 +22,42 @@ const ComputerDetails = () => {
 
     useEffect(() => {
         setLoading(true);
-        $api.get("/conputers/" + params.id)
+        $api.get("/computers/" + params.id)
             .then((response) => {
                 setComputer(response.data);
                 setLoading(false);
             })
             .catch(reason => {
-                toastr.error("Store", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
         ;
     }, []);
 
     const navigateToLogin = () => {
         navigate("/login");
-        toastr.info("Store", "Щоб переглядати список бажаного потрібно авторизуватись");
+        toastr.info("Computer shop", "Щоб переглядати список бажаного потрібно авторизуватись");
     }
 
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Bookstore", "Книжка успішно додана до кошика");
+                toastr.success("Computer shop", "Книжка успішно додана до кошика");
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }
 
     const deleteBook = (id) => {
-        $api.delete("/books/" + id)
+        $api.delete("/computers/" + id)
             .then(response => {
-                if(response.data === true) {
-                    toastr.success("Bookstore", "Книжка успішно видалена");
-                    navigate("/books");
+                if (response.data === true) {
+                    toastr.success("Computer shop", "Книжка успішно видалена");
+                    navigate("/computers");
                 }
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }
 
@@ -88,14 +86,75 @@ const ComputerDetails = () => {
                                 <Typography variant="h5" component="div">
                                     Ціна : {computer.price} грн.
                                 </Typography>
+                                <hr/>
                                 <Typography variant="h5" component="div">
                                     Процессор : {computer.processor}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    Відеокарта : {computer.vidaoCard}
+                                    Продуктивність процесору : {computer.processorPerformance}
                                 </Typography>
+                                <Typography variant="h5" component="div">
+                                    Кількість ядер : {computer.processorAmountCores}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Тактова частота : {computer.processorFrequency}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Кількість потоків : {computer.processorAmountThreads}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Об'єм кеша : {computer.processorCacheSize}
+                                </Typography>
+                                <hr/>
+                                <Typography variant="h5" component="div">
+                                    Тип відеокарти : {computer.videoCardType}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Відеокарта : {computer.videoCard}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Обсяг відеопам'яті : {computer.videoCardAmountMemory}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Тип відеопам'яті : {computer.videoCardTypeMemory}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Продуктивність відеокарти : {computer.videoCardPerformance}
+                                </Typography>
+                                <hr/>
+                                <Typography variant="h5" component="div">
+                                    Материнська плата : {computer.motherboard}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Максимальна кількість слотів пам'яті : {computer.motherboardMemorySlots}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Максимальний обсяг пам'яті : {computer.motherboardMaxAmountMemory}
+                                </Typography>
+                                <hr/>
+                                <Typography variant="h5" component="div">
+                                    Обсяг оперативної пам'яті : {computer.RAMVolume}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Частота оперативної пам'яті : {computer.RAMFrequency}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Тип оперативної пам'яті : {computer.RAMType}
+                                </Typography>
+                                <hr/>
+                                <Typography variant="h5" component="div">
+                                    Обсяг оперативної пам'яті : {computer.driveType}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Об'єм HDD : {computer.driveVolumeHDD}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    Об'єм SSD : {computer.driveVolumeSSD}
+                                </Typography>
+
                                 <div style={{display: "flex", justifyContent: "flex-end"}}>
-                                    <Button variant="contained" color="success" onClick={() => addToBasket(computer.id)}>
+                                    <Button variant="contained" color="success"
+                                            onClick={() => addToBasket(computer.id)}>
                                         Додати в кошик
                                     </Button>
                                 </div>
@@ -105,7 +164,8 @@ const ComputerDetails = () => {
                                         {/*<Button variant="contained" color="warning" onClick={() => setOpen(true)}>
                                             Редагувати
                                         </Button>*/}
-                                        <Button variant="contained" color="error" onClick={() => deleteBook(computer.id)}>
+                                        <Button variant="contained" color="error"
+                                                onClick={() => deleteBook(computer.id)}>
                                             Видалити
                                         </Button>
                                     </div>

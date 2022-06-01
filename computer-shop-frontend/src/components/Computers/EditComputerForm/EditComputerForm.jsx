@@ -32,7 +32,7 @@ const EditComputerForm = ({book, setOpen}) => {
                 setAuthors(response.data);
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
@@ -43,7 +43,7 @@ const EditComputerForm = ({book, setOpen}) => {
                 setLoading(false);
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
@@ -53,7 +53,7 @@ const EditComputerForm = ({book, setOpen}) => {
                 setLanguages(response.data);
             })
             .catch(reason => {
-                toastr.error("Bookstore", "Виникли технічні проблеми");
+                toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }, []);
 
