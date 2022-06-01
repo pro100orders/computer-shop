@@ -4,10 +4,14 @@ import com.pro100user.computershopbackend.dto.ComputerCreateDTO;
 import com.pro100user.computershopbackend.dto.ComputerDTO;
 import com.pro100user.computershopbackend.dto.ComputerUpdateDTO;
 import com.pro100user.computershopbackend.dto.ProductDTO;
+import com.pro100user.computershopbackend.entity.Basket;
 import com.pro100user.computershopbackend.entity.Computer;
+import com.pro100user.computershopbackend.entity.Order;
 import com.pro100user.computershopbackend.entity.Product;
 import com.pro100user.computershopbackend.mapper.ComputerMapper;
+import com.pro100user.computershopbackend.repository.BasketRepository;
 import com.pro100user.computershopbackend.repository.ComputerRepository;
+import com.pro100user.computershopbackend.repository.OrderRepository;
 import com.pro100user.computershopbackend.service.ComputerService;
 import com.pro100user.computershopbackend.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,9 @@ public class ComputerServiceImpl implements ComputerService {
 
     private final ComputerRepository computerRepository;
     private final ComputerMapper computerMapper;
+
+    private final BasketRepository basketRepository;
+    private final OrderRepository orderRepository;
 
     private final ImageService imageService;
 
@@ -55,6 +62,17 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     public boolean delete(Long computerId) {
+        Computer computer = computerRepository.findById(computerId).orElseThrow();
+        for(Basket basket : computer.getBaskets()) {
+            basket.getProducts().remove(computer);
+            basket.setTotalPrice(basket.getTotalPrice() - computer.getPrice());
+            basketRepository.save(basket);
+        }
+        for(Order order : computer.getOrders()) {
+            order.getProducts().remove(computer);
+            order.setTotalPrice(order.getTotalPrice() - computer.getPrice());
+            orderRepository.save(order);
+        }
         computerRepository.deleteById(computerId);
         return true;
     }
