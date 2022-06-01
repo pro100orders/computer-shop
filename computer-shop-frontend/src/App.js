@@ -26,7 +26,7 @@ function App() {
     }, [token]);
 
     return (
-        <>
+        <div style={{background: "#FFECE8"}}>
             <Header/>
             <AppRouter/>
             <Footer/>
@@ -40,7 +40,7 @@ function App() {
                 progressBar
                 closeOnToastrClick
             />
-        </>
+        </div>
     );
 }
 
