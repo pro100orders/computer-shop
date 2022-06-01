@@ -18,7 +18,7 @@ const Computer = ({computer, isBasket}) => {
     const deleteWithBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Книжка успішно видалена з кошика");
+                toastr.success("Computer shop", "Комп'ютер успішно видалена з кошика");
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -28,7 +28,7 @@ const Computer = ({computer, isBasket}) => {
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Книжка успішно додана до кошика");
+                toastr.success("Computer shop", "Комп'ютер успішно додана до кошика");
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
