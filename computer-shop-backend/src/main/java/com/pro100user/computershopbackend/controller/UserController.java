@@ -5,6 +5,7 @@ import com.pro100user.computershopbackend.dto.OrderDTO;
 import com.pro100user.computershopbackend.dto.ProductDTO;
 import com.pro100user.computershopbackend.dto.UserDTO;
 import com.pro100user.computershopbackend.dto.UserUpdateDTO;
+import com.pro100user.computershopbackend.entity.Order;
 import com.pro100user.computershopbackend.security.UserSecurity;
 import com.pro100user.computershopbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -66,7 +68,10 @@ public class UserController {
     public List<OrderDTO> getOrders(
             @CurrentUser UserSecurity userSecurity
     ) {
-        return userService.getOrders(userSecurity.getId());
+        return userService.getOrders(userSecurity.getId())
+                .stream()
+                .sorted(Comparator.comparing(OrderDTO::getCreatedAt).reversed())
+                .toList();
     }
 
     @PostMapping("/orders")
