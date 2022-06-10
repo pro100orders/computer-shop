@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import $api from "../../http";
 import {toastr} from "react-redux-toastr";
 import {Button, Container, Typography} from "@mui/material";
+import Order from "../../components/Order/Order";
+
 const Orders = () => {
 
     const [orders, setOrders] = useState([]);
@@ -39,23 +41,7 @@ const Orders = () => {
                                     <div>
                                         {
                                             orders.map(order => (
-                                               <div style={{width: "80%", border: "1px solid blue", borderRadius: "5px", margin: 2}}>
-                                                   <Typography variant="h5" component="div">
-                                                        ID - {order.id}
-                                                   </Typography>
-                                                   {
-                                                       order.products &&
-                                                       <Typography variant="h5" component="div">
-                                                           Кількість продуктів - {order.products.length}
-                                                       </Typography>
-                                                   }
-                                                   <Typography variant="h5" component="div">
-                                                       Загальна ціна - {order.totalPrice} грн.
-                                                   </Typography>
-                                                   <Typography variant="h5" component="div">
-                                                       Статус - {order.status}
-                                                   </Typography>
-                                               </div>
+                                                <Order order={order}/>
                                             ))
                                         }
                                     </div>

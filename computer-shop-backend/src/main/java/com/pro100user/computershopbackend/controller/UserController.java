@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("/orders")
-    public boolean addOrders(
+    public boolean toOrder(
             @CurrentUser UserSecurity userSecurity
     ) {
         return userService.toOrder(userSecurity.getId());

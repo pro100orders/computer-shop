@@ -26,7 +26,7 @@ function App() {
     }, [token]);
 
     return (
-        <div style={{background: "#FFECE8"}}>
+        <div>
             <Header/>
             <AppRouter/>
             <Footer/>

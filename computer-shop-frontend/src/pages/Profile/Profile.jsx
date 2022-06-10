@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import $api from "../../http";
 import {toastr} from "react-redux-toastr";
-import {Button, Typography} from "@mui/material";
+import {Container, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import Order from "../../components/Order/Order";
 
 const Profile = ({setModalProfile, setModalProfileEdit}) => {
 
@@ -20,42 +21,87 @@ const Profile = ({setModalProfile, setModalProfileEdit}) => {
             });
     }, []);
 
-    return (
-        <div style={{width: 400, height: 800,  margin: "auto"}}>
-            {
+    const [orders, setOrders] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
-            }
-            <Typography variant="h3" component="div">
+    useEffect(() => {
+        setLoading(true);
+        $api.get("/user/orders")
+            .then(value => {
+                setOrders(value.data);
+                setLoading(false);
+            })
+            .catch(reason => {
+                toastr.error("Computer shop", "Виникли технічні проблеми");
+            });
+    }, []);
+
+    return (
+        <Container maxWidth="xl" sx={{marginTop: "10px", paddingTop: "10px"}} style={{minHeight: "100vh"}}>
+            <Typography variant="h3" component="div" style={{marginBottom: 10}}>
                 Мій профіль
             </Typography>
-            {
-                user.surname &&
-                <Typography variant="h5" component="div">
-                    Прізвище : {user.surname}
+            <div style={{display: "flex"}}>
+                <div>
+                    {
+                        user.surname &&
+                        <Typography variant="h5" component="div">
+                            Прізвище : {user.surname}
+                        </Typography>
+                    }
+                    {
+                        user.name &&
+                        <Typography variant="h5" component="div">
+                            Ім'я : {user.name}
+                        </Typography>
+                    }
+                    <Typography variant="h5" component="div">
+                        Пошта : {user.email}
+                    </Typography>
+                    {
+                        user.phone &&
+                        <Typography variant="h5" component="div">
+                            Номер телефону : {user.phone}
+                        </Typography>
+                    }
+                    {
+                        user.address &&
+                        <Typography variant="h5" component="div">
+                            Адресса : {user.address}
+                        </Typography>
+                    }
+                </div>
+            </div>
+            <hr style={{borderColor: "green"}}/>
+            <div>
+                <Typography variant="h4" component="div" style={{display: "flex", justifyContent: "center"}}>
+                    Замовлення
                 </Typography>
-            }
-            {
-                user.name &&
-                <Typography variant="h5" component="div">
-                    Ім'я : {user.name}
-                </Typography>
-            }
-            <Typography variant="h5" component="div">
-                Пошта : {user.email}
-            </Typography>
-            {
-                user.phone &&
-                <Typography variant="h5" component="div">
-                    Номер телефону : {user.phone}
-                </Typography>
-            }
-            {
-                user.address &&
-                <Typography variant="h5" component="div">
-                    Адресса : {user.address}
-                </Typography>
-            }
-        </div>
+                <div>
+                    {
+                        isLoading ?
+                            <div>Загрузка даних...</div>
+                            :
+                            <div>
+                                {
+                                    orders && orders.length === 0 ?
+                                        <Typography variant="h5" component="div">
+                                            Замовлень немає
+                                        </Typography>
+                                        :
+                                        <div>
+                                            {
+                                                orders.map(order => (
+                                                    <Order order={order}/>
+                                                ))
+                                            }
+                                        </div>
+                                }
+                            </div>
+                    }
+                </div>
+            </div>
+        </Container>
     );
 };
 

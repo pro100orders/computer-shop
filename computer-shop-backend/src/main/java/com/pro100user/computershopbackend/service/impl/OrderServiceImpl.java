@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderDTO> getAll() {
-        return orderMapper.toListOrderDTO(
+        return orderMapper.toOrderDTO(
                 orderRepository.findAll()
         );
     }

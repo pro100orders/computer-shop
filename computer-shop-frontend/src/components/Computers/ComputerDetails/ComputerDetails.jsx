@@ -82,11 +82,11 @@ const ComputerDetails = () => {
                             <div>
                                 <img src={"http://localhost:8080/files/" + computer.image} alt={computer.name}/>
                             </div>
-                            <div style={{border: "1px solid blue", padding: 20}}>
+                            <div style={{border: "1px solid green", padding: 20}}>
                                 <Typography variant="h6" component="div">
                                     Ціна : {computer.price} грн.
                                 </Typography>
-                                <hr/>
+                                <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Процесор
                                 </Typography>
@@ -108,7 +108,7 @@ const ComputerDetails = () => {
                                 <Typography variant="h6" component="div">
                                     Об'єм кеша : {computer.processorCacheSize}
                                 </Typography>
-                                <hr/>
+                                <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Відеокарта
                                 </Typography>
@@ -127,7 +127,7 @@ const ComputerDetails = () => {
                                 <Typography variant="h6" component="div">
                                     Продуктивність відеокарти : {computer.videoCardPerformance}
                                 </Typography>
-                                <hr/>
+                                <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Материнська плата
                                 </Typography>
@@ -140,7 +140,7 @@ const ComputerDetails = () => {
                                 <Typography variant="h6" component="div">
                                     Максимальний обсяг пам'яті : {computer.motherboardMaxAmountMemory}
                                 </Typography>
-                                <hr/>
+                                <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Оперативна пам'ять
                                 </Typography>
@@ -153,7 +153,7 @@ const ComputerDetails = () => {
                                 <Typography variant="h6" component="div">
                                     Тип оперативної пам'яті : {computer.RAMType}
                                 </Typography>
-                                <hr/>
+                                <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Привід
                                 </Typography>
@@ -166,7 +166,7 @@ const ComputerDetails = () => {
                                 <Typography variant="h6" component="div">
                                     Об'єм SSD : {computer.driveVolumeSSD}
                                 </Typography>
-                                <hr/>
+                                <hr style={{borderColor: "green"}}/>
                                 <div style={{display: "flex", justifyContent: "flex-end", margin: 2}}>
                                     <Button variant="contained" color="success" onClick={() => addToBasket(computer.id)}>
                                         Додати в кошик

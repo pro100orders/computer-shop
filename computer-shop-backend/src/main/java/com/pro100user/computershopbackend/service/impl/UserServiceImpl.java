@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<OrderDTO> getOrders(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        return orderMapper.toListOrderDTO(
+        return orderMapper.toOrderDTO(
                 user.getOrders()
         );
     }
@@ -165,9 +165,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean toOrder(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        if(user.getBasket() == null) {
-            return false;
-        } else if(user.getBasket().getProducts().isEmpty()) {
+        if(user.getBasket() == null || user.getBasket().getProducts().isEmpty()) {
             return false;
         }
         Order order = Order.builder()
