@@ -20,9 +20,6 @@ public class OrderUpdateDTO {
     @JsonIgnore
     private Long userId;
 
-    @Min(value = 0, message = "Product id cannot be less than 0")
-    private Long productId;
-
     @NotNull
     private Status status;
 }

@@ -44,7 +44,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO update(OrderUpdateDTO dto) {
-        Order entity = orderMapper.toEntity(dto);
+        Order entity = orderRepository.getById(dto.getId());
+        entity.setStatus(dto.getStatus());
         return orderMapper.toOrderDTO(
                 orderRepository.save(entity)
         );
