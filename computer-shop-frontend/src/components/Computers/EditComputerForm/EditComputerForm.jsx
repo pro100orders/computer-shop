@@ -40,9 +40,9 @@ const EditComputerForm = ({computer, setOpen}) => {
         setValue("motherboardMemorySlots", computer.motherboardMemorySlots);
         setValue("motherboardMaxAmountMemory", computer.motherboardMaxAmountMemory);
 
-        setValue("RAMVolume", computer.RAMVolume);
-        setValue("RAMFrequency", computer.RAMFrequency);
-        setValue("RAMType", computer.RAMType);
+        setValue("ramVolume", computer.ramVolume);
+        setValue("ramFrequency", computer.ramFrequency);
+        setValue("ramType", computer.ramType);
 
         setValue("driveType", computer.driveType);
         setValue("driveVolumeHDD", computer.driveVolumeHDD);
@@ -54,7 +54,7 @@ const EditComputerForm = ({computer, setOpen}) => {
 
     const [videoCardTypes, setVideoCardTypes] = useState([]);
     const [videoCardTypeMemoryes, setVideoCardTypeMemoryes] = useState([]);
-    const [RAMTypes, setRAMTypes] = useState([]);
+    const [ramTypes, setRamTypes] = useState([]);
     const [driveTypes, setDriveTypes] = useState([]);
 
     useEffect(() => {
@@ -80,7 +80,7 @@ const EditComputerForm = ({computer, setOpen}) => {
     useEffect(() => {
         $api.get("/computers/ram-types")
             .then(response => {
-                setRAMTypes(response.data);
+                setRamTypes(response.data);
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -129,7 +129,7 @@ const EditComputerForm = ({computer, setOpen}) => {
     }
 
     return (
-        <div className='add-book-form' style={{width: "600px"}}>
+        <div className='add-book-form' style={{width: "1100px"}}>
             <form className="add-book-form__form" onSubmit={handleSubmit(onSubmit)}
                   style={{display: "flex", flexWrap: "wrap"}}>
                 <div className={"formInput"}>
@@ -506,7 +506,7 @@ const EditComputerForm = ({computer, setOpen}) => {
                 <div className={"formInput"}>
                     <Controller
                         control={control}
-                        name="RAMVolume"
+                        name="ramVolume"
                         render={({field}) => (
                             <TextField
                                 label="Обсяг оперативної пам'яті"
@@ -518,8 +518,8 @@ const EditComputerForm = ({computer, setOpen}) => {
                                 value={field.value}
                                 variant={"filled"}
                                 onChange={(e) => field.onChange(e)}
-                                error={!!errors.RAMVolume?.message}
-                                helperText={errors.RAMVolume?.message}
+                                error={!!errors.ramVolume?.message}
+                                helperText={errors.ramVolume?.message}
                             />
                         )}
                     />
@@ -527,7 +527,7 @@ const EditComputerForm = ({computer, setOpen}) => {
                 <div className={"formInput"}>
                     <Controller
                         control={control}
-                        name="RAMFrequency"
+                        name="ramFrequency"
                         render={({field}) => (
                             <TextField
                                 label="Частота оперативної пам'яті"
@@ -539,8 +539,8 @@ const EditComputerForm = ({computer, setOpen}) => {
                                 value={field.value}
                                 variant={"filled"}
                                 onChange={(e) => field.onChange(e)}
-                                error={!!errors.RAMFrequency?.message}
-                                helperText={errors.RAMFrequency?.message}
+                                error={!!errors.ramFrequency?.message}
+                                helperText={errors.ramFrequency?.message}
                             />
                         )}
                     />
@@ -561,9 +561,9 @@ const EditComputerForm = ({computer, setOpen}) => {
                                 error={!!errors.ramType?.message}
                             >
                                 {
-                                    RAMTypes &&
-                                    RAMTypes.map((RAMType) => (
-                                            <MenuItem key={RAMType} value={RAMType}>{RAMType}</MenuItem>
+                                    ramTypes &&
+                                    ramTypes.map((ramType) => (
+                                            <MenuItem key={ramType} value={ramType}>{ramType}</MenuItem>
                                         )
                                     )
                                 }

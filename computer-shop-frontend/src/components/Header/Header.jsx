@@ -67,7 +67,7 @@ const Header = () => {
                                 </a>
                             </h4>
                             <h4 style={{margin: "0 0 0 10px"}}>
-                                <a href="https://t.me/pro100user17" style={{textDecoration: "none", marginLeft: 10}}>
+                                <a href="https://t.me/bez_imeni18" style={{textDecoration: "none", marginLeft: 10}}>
                                     Telegram
                                 </a>
                             </h4>
@@ -213,7 +213,7 @@ const Header = () => {
                             </MenuItem>
                         </Menu>
                     </Box>
-                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                    <Box sx={{flexGrow: 0, display: {xs: 'none', md: 'flex'}}}>
                         <Button
                             onClick={e => navigate("/computers")}
                             sx={{my: 2, color: 'white', display: 'block'}}
@@ -221,16 +221,16 @@ const Header = () => {
                             Комп'ютери
                         </Button>
                     </Box>
-                    {/*<Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         <Button
                             onClick={e => navigate("/laptops")}
                             sx={{my: 2, color: 'white', display: 'block'}}
                         >
                             Ноутбуки
                         </Button>
-                    </Box>*/}
+                    </Box>
                     {
-                        roles && roles.includes("ROLE_USER") &&
+                        roles && roles.includes("ROLE_ADMIN") &&
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                             <Button
                                 onClick={e => navigate("/admin")}

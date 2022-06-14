@@ -1,5 +1,6 @@
 package com.pro100user.computershopbackend.security.jwt;
 
+import com.pro100user.computershopbackend.exception.JwtAuthenticationException;
 import com.pro100user.computershopbackend.security.UserSecurity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -39,8 +40,12 @@ public class JwtProvider {
     }
 
     public boolean validateToken(String token) {
-        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-        return true;
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            throw new JwtAuthenticationException("Jwt is not valid!");
+        }
     }
 
     public String getLoginFromToken(String token) {

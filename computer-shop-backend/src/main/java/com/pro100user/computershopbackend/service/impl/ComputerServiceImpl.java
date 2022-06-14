@@ -32,9 +32,6 @@ public class ComputerServiceImpl implements ComputerService {
     private final ComputerRepository computerRepository;
     private final ComputerMapper computerMapper;
 
-    private final BasketRepository basketRepository;
-    private final OrderRepository orderRepository;
-
     private final ImageService imageService;
 
     @Override
@@ -63,15 +60,8 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public boolean delete(Long computerId) {
         Computer computer = computerRepository.findById(computerId).orElseThrow();
-        for(Basket basket : computer.getBaskets()) {
-            basket.getProducts().remove(computer);
-            basket.setTotalPrice(basket.getTotalPrice() - computer.getPrice());
-            basketRepository.save(basket);
-        }
-        for(Order order : computer.getOrders()) {
-            order.getProducts().remove(computer);
-            order.setTotalPrice(order.getTotalPrice() - computer.getPrice());
-            orderRepository.save(order);
+        if(!computer.getBaskets().isEmpty() || !computer.getOrders().isEmpty()) {
+            throw new IllegalArgumentException("Видалення не доступне, так як цей об'єкт використовується!");
         }
         computerRepository.deleteById(computerId);
         return true;

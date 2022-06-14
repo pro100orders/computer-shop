@@ -4,7 +4,7 @@ import {toastr} from "react-redux-toastr";
 import $api from "../../../http";
 import {Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
 
-const Computer = ({computer, isBasket}) => {
+const Laptop = ({laptop, isBasket}) => {
 
     const roles = useSelector(state => state.auth.user.roles);
 
@@ -18,7 +18,7 @@ const Computer = ({computer, isBasket}) => {
     const deleteWithBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Комп'ютер успішно видалений з кошика");
+                toastr.success("Computer shop", "Ноутбук успішно видалений з кошика");
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -28,50 +28,53 @@ const Computer = ({computer, isBasket}) => {
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Комп'ютер успішно доданий до кошика");
+                toastr.success("Computer shop", "Ноутбук успішно доданий до кошика");
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
             });
     }
 
+    console.log(laptop)
     return (
         <Card sx={{
             width: "600px",
             margin: 1,
             marginLeft: "auto",
             marginRight: "auto",
-            display: "flex",
-            justifyContent: "space-between"
+            display: "flex"
         }}>
             <CardMedia
                 component="img"
-                image={"http://localhost:8080/files/" + computer.image}
+                image={"http://localhost:8080/files/" + laptop.image}
                 alt="book"
                 sx={{width: "300px", height: "370px"}}
             />
             <div>
                 <CardContent sx={{height: 120}}>
                     <Typography gutterBottom variant="body1" component="div">
-                        <NavLink to={`/computers/${computer.id}`}>{computer.name}</NavLink>
+                        <NavLink to={`/laptops/${laptop.id}`}>{laptop.name}</NavLink>
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Процесор - {computer.processor}
+                        Дисплей - {laptop.displayDiagonal} дюймів
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Відеокарта - {computer.videoCard}
+                        Процесор - {laptop.processor}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Оперативна память - {computer.ramVolume}гб.
+                        Відеокарта - {laptop.videoCard}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Оперативна память - {laptop.ramVolume}гб.
                     </Typography>
                     <Typography variant="subtitle1" color="orange">
-                        {computer.price}.грн
+                        {laptop.price}.грн
                     </Typography>
                 </CardContent>
                 <CardActions style={{display: "flex", justifyContent: "flex-end"}}>
                     {
                         isBasket ?
-                            <Button variant="contained" color="success" onClick={(e) => deleteWithBasket(computer.id)}>
+                            <Button variant="contained" color="success" onClick={(e) => deleteWithBasket(laptop.id)}>
                                 Видалити
                             </Button>
                             :
@@ -79,7 +82,7 @@ const Computer = ({computer, isBasket}) => {
                                 (roles && roles.includes("ROLE_GUEST")) ?
                                     navigateToLogin(2)
                                     :
-                                    addToBasket(computer.id)
+                                    addToBasket(laptop.id)
                             }}>
                                 Купити
                             </Button>
@@ -90,4 +93,4 @@ const Computer = ({computer, isBasket}) => {
     );
 };
 
-export default Computer;
+export default Laptop;

@@ -8,12 +8,12 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {ProductMapper.class})
 public interface ComputerMapper {
 
     Computer toEntity(ComputerCreateDTO dto);
     Computer toEntity(ComputerUpdateDTO dto);
 
     ComputerDTO toComputerDTO(Computer computer);
-    List<ComputerDTO> toComputerDTO(List<Computer> computer);
+    List<ComputerDTO> toComputerDTO(List<Computer> computers);
 }

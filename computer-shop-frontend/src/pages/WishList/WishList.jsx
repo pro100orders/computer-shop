@@ -22,7 +22,7 @@ const WishList = () => {
     }, [])
 
     return (
-        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}} style={{minHeight: "100vh"}}>
+        <Container maxWidth="xl" sx={{marginTop: "10px", paddingTop: "10px"}} style={{minHeight: "100vh"}}>
             <Typography variant="h2" component="div">
                 Список бажань
             </Typography>

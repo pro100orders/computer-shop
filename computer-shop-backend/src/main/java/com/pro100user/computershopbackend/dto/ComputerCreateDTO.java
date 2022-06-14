@@ -49,11 +49,11 @@ public class ComputerCreateDTO extends ProductCreateDTO {
     private int motherboardMaxAmountMemory;
 
 
-    private int RAMVolume;
+    private int ramVolume;
 
-    private double RAMFrequency;
+    private double ramFrequency;
 
-    private RAMTypes RAMType;
+    private RAMTypes ramType;
 
 
     private DriveType driveType;

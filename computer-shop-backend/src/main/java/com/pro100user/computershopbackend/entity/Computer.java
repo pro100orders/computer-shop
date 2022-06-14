@@ -73,15 +73,15 @@ public class Computer extends Product implements Serializable {
 
 
     //Оперативна пам'ять
-    @Column(name = "RAM_volume")//Обсяг
-    private int RAMVolume;
+    @Column(name = "ram_volume")//Обсяг
+    private int ramVolume;
 
-    @Column(name = "RAM_frequency")//Частота
-    private double RAMFrequency;
+    @Column(name = "ram_frequency")//Частота
+    private double ramFrequency;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "RAM_type")
-    private RAMTypes RAMType;
+    @Column(name = "ram_type")
+    private RAMTypes ramType;
 
 
 

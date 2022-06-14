@@ -48,10 +48,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean create(UserCreateDTO dto) {
         if(findByEmail(dto.getEmail()) != null) {
-            throw new BadCredentialsException("email");
+            throw new IllegalArgumentException("Ця пошта вже зайнята");
         }
         if(findByPhone(dto.getPhone()) != null) {
-            throw new BadCredentialsException("phone");
+            throw new IllegalArgumentException("Цей номер вже зайнятий");
         }
         User entity = userMapper.toEntity(dto);
         entity.setRoles(List.of(Role.ROLE_USER));
@@ -75,10 +75,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(entity.getId()).orElseThrow();
 
         if(!user.getEmail().equals(entity.getEmail()) && findByEmail(dto.getEmail()) != null) {
-            throw new BadCredentialsException("email");
+            throw new IllegalArgumentException("Ця пошта вже зайнята");
         }
         if(!user.getPhone().equals(entity.getPhone()) && findByPhone(dto.getPhone()) != null) {
-            throw new BadCredentialsException("phone");
+            throw new IllegalArgumentException("Цей номер вже зайнятий");
         }
         if(dto.getNewPassword() != null) {
             if(passwordEncoder.matches(user.getPassword(), entity.getPassword())){

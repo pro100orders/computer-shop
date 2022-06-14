@@ -4,12 +4,12 @@ import $api from "../../../http";
 import {Button, Container, Typography} from "@mui/material";
 import {toastr} from "react-redux-toastr";
 import {useSelector} from "react-redux";
-import EditComputerForm from "../EditComputerForm/EditComputerForm";
+import EditLaptopForm from "../EditLaptopForm/EditLaptopForm";
 import MyModal from "../../UI/Modal/MyModal";
 
-const ComputerDetails = () => {
+const LaptopDetails = () => {
 
-    const [computer, setComputer] = useState({});
+    const [laptop, setLaptop] = useState({});
     const [isLoading, setLoading] = useState(true);
 
     const params = useParams();
@@ -22,14 +22,15 @@ const ComputerDetails = () => {
 
     useEffect(() => {
         setLoading(true);
-        $api.get("/computers/" + params.id)
+        $api.get("/laptops/" + params.id)
             .then((response) => {
-                setComputer(response.data);
+                setLaptop(response.data);
                 setLoading(false);
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
             });
+        ;
     }, []);
 
     const navigateToLogin = () => {
@@ -40,7 +41,7 @@ const ComputerDetails = () => {
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Комп'ютер успішно додано до кошика");
+                toastr.success("Computer shop", "Ноутбук успішно додано до кошика");
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
@@ -48,11 +49,11 @@ const ComputerDetails = () => {
     }
 
     const deleteBook = (id) => {
-        $api.delete("/computers/" + id)
+        $api.delete("/laptops/" + id)
             .then(response => {
                 if (response.data === true) {
-                    toastr.success("Computer shop", "Комп'ютер успішно видалено");
-                    navigate("/computers");
+                    toastr.success("Computer shop", "Ноутбук успішно видалено");
+                    navigate("/laptops");
                 }
             })
             .catch(reason => {
@@ -72,102 +73,111 @@ const ComputerDetails = () => {
                         {
                             open &&
                             <MyModal open={open} setOpen={setOpen}
-                                     children={<EditComputerForm computer={computer} setOpen={setOpen}/>}/>
+                                     children={<EditLaptopForm laptop={laptop} setOpen={setOpen}/>}/>
                         }
                         <Typography variant="h2" component="div">
-                            Комп'ютер {computer.name}
+                            {laptop.name}
                         </Typography>
                         <div style={{display: "flex"}}>
                             <div>
-                                <img src={"http://localhost:8080/files/" + computer.image} alt={computer.name}/>
+                                <img src={"http://localhost:8080/files/" + laptop.image} alt={laptop.name}/>
                             </div>
                             <div style={{border: "1px solid green", padding: 20}}>
                                 <Typography variant="h6" component="div">
-                                    Ціна : {computer.price} грн.
+                                    Ціна : {laptop.price} грн.
                                 </Typography>
                                 <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Процесор
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Процессор : {computer.processor}
+                                    Процессор : {laptop.processor}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Продуктивність : {computer.processorPerformance}
+                                    Продуктивність : {laptop.processorPerformance}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Кількість ядер : {computer.processorAmountCores}
+                                    Кількість ядер : {laptop.processorAmountCores}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Тактова частота : {computer.processorFrequency}
+                                    Кількість потоків : {laptop.processorAmountThreads}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Кількість потоків : {computer.processorAmountThreads}
-                                </Typography>
-                                <Typography variant="h6" component="div">
-                                    Об'єм кеша : {computer.processorCacheSize}
+                                    Об'єм кеша : {laptop.processorCacheSize}
                                 </Typography>
                                 <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Відеокарта
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Тип відеокарти : {computer.videoCardType}
+                                    Тип відеокарти : {laptop.videoCardType}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Відеокарта : {computer.videoCard}
+                                    Відеокарта : {laptop.videoCard}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Обсяг відеопам'яті : {computer.videoCardAmountMemory}
+                                    Обсяг : {laptop.videoCardAmountMemory}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Тип відеопам'яті : {computer.videoCardTypeMemory}
+                                    Тип відеопам'яті : {laptop.videoCardTypeMemory}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Продуктивність : {computer.videoCardPerformance}
+                                    Продуктивність : {laptop.videoCardPerformance}
                                 </Typography>
                                 <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
-                                    Материнська плата
+                                    Дисплей
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Материнська плата : {computer.motherboard}
+                                    Діагональ : {laptop.displayDiagonal}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Максимальна кількість слотів пам'яті : {computer.motherboardMemorySlots}
+                                    Дозвіл : {laptop.displayMatrixType}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Максимальний обсяг пам'яті : {computer.motherboardMaxAmountMemory}
+                                    Частота оновлення : {laptop.displayFrequency}
+                                </Typography>
+                                <Typography variant="h6" component="div">
+                                    Покриття : {laptop.displayCoverage}
+                                </Typography>
+                                <Typography variant="h6" component="div">
+                                    Додатково : {laptop.displayInformation}
                                 </Typography>
                                 <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Оперативна пам'ять
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Обсяг : {computer.ramVolume}
+                                    Обсяг : {laptop.ramVolume}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Частота : {computer.ramFrequency}
+                                    Частота : {laptop.ramFrequency}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Тип : {computer.ramType}
+                                    Кількість слотів : {laptop.ramSlots}
+                                </Typography>
+                                <Typography variant="h6" component="div">
+                                    Максимальний підтримуваний обсяг : {laptop.ramMax}
+                                </Typography>
+                                <Typography variant="h6" component="div">
+                                    Додатково : {laptop.ramInformation}
                                 </Typography>
                                 <hr style={{borderColor: "green"}}/>
                                 <Typography variant="h5" component="div">
                                     Привід
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Тип приводу : {computer.driveType}
+                                    Тип приводу : {laptop.driveType}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Об'єм HDD : {computer.driveVolumeHDD}
+                                    Об'єм HDD : {laptop.driveVolumeHDD}
                                 </Typography>
                                 <Typography variant="h6" component="div">
-                                    Об'єм SSD : {computer.driveVolumeSSD}
+                                    Об'єм SSD : {laptop.driveVolumeSSD}
                                 </Typography>
                                 <hr style={{borderColor: "green"}}/>
                                 <div style={{display: "flex", justifyContent: "flex-end", margin: 2}}>
-                                    <Button variant="contained" color="success" onClick={() => addToBasket(computer.id)}>
+                                    <Button variant="contained" color="success" onClick={() => addToBasket(laptop.id)}>
                                         Додати в кошик
                                     </Button>
                                 </div>
@@ -178,7 +188,7 @@ const ComputerDetails = () => {
                                             Редагувати
                                         </Button>
                                         <Button variant="contained" color="error"
-                                                onClick={() => deleteBook(computer.id)}>
+                                                onClick={() => deleteBook(laptop.id)}>
                                             Видалити
                                         </Button>
                                     </div>
@@ -191,4 +201,4 @@ const ComputerDetails = () => {
     );
 };
 
-export default ComputerDetails;
+export default LaptopDetails;

@@ -12,44 +12,41 @@ const Product = ({product, setProducts, isBasket}) => {
 
     const navigateToLogin = (i) => {
         navigate("/login");
-        toastr.info("Computer shop", "Щоб добавити в кошик потрібно авторизуватись");
+        toastr.info("Laptop shop", "Щоб добавити в кошик потрібно авторизуватись");
     }
 
     const deleteWithBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
                 setProducts(prevState => prevState.filter(product => product.id !== id));
-                toastr.success("Computer shop", "Книжка успішно видалена з кошика");
+                toastr.success("Laptop shop", "Книжка успішно видалена з кошика");
             })
             .catch(reason => {
-                toastr.error("Computer shop", "Виникли технічні проблеми");
+                toastr.error("Laptop shop", "Виникли технічні проблеми");
             });
     }
 
     const addToBasket = (id) => {
         $api.post("/user/basket", id)
             .then(response => {
-                toastr.success("Computer shop", "Книжка успішно додана до кошика");
+                toastr.success("Laptop shop", "Книжка успішно додана до кошика");
             })
             .catch(reason => {
-                toastr.error("Computer shop", "Виникли технічні проблеми");
+                toastr.error("Laptop shop", "Виникли технічні проблеми");
             });
     }
 
     return (
-        <Card sx={{width: "600px", margin: 1, marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "space-between"}}>
+        <Card sx={{height: "510px", margin: 1, marginLeft: "auto", marginRight: "auto"}}>
             <CardMedia
                 component="img"
                 image={"http://localhost:8080/files/" + product.image}
                 alt="book"
-                sx={{width: "200px", height: "370px"}}
+                sx={{width: "300px", height: "370px"}}
             />
-            <CardContent sx={{height: 120}}>
+            <CardContent>
                 <Typography gutterBottom variant="body1" component="div">
                     {product.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Опис - {product.description}
                 </Typography>
                 <Typography variant="subtitle1" color="orange">
                     {product.price}.грн

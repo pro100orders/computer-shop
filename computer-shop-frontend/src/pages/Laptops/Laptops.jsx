@@ -5,13 +5,14 @@ import {toastr} from "react-redux-toastr";
 import {Button, Container, FormControl, InputLabel, MenuItem, Pagination, Select} from "@mui/material";
 import MyModal from "../../components/UI/Modal/MyModal";
 import AddComputerForm from "../../components/Computers/AddComputerForm/AddComputerForm";
-import ComputersList from "../../components/Computers/ComputersList/ComputersList";
+import LaptopsList from "../../components/Laptops/LaptopsList/LaptopsList";
+import AddLaptopForm from "../../components/Laptops/AddLaptopForm/AddLaptopForm";
 
-const Computers = () => {
+const Laptops = () => {
 
     const roles = useSelector(state => state.auth.user.roles);
 
-    const [computers, setComputers] = useState([]);
+    const [laptops, setLaptops] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
     const [open, setOpen] = useState(false);
@@ -22,9 +23,9 @@ const Computers = () => {
 
     useEffect(() => {
         setLoading(true);
-        $api.get("/computers")
+        $api.get("/laptops")
             .then(response => {
-                setComputers(response.data);
+                setLaptops(response.data);
                 setLoading(false);
             })
             .catch(reason => {
@@ -33,14 +34,14 @@ const Computers = () => {
     }, [])
 
     useEffect(() => {
-        $api.get("/computers/count")
+        $api.get("/laptops/count")
             .then(response => {
                 setAllPage(response.data.count);
             })
             .catch(reason => {
                 toastr.error("Computer shop", "Виникли технічні проблеми");
             });
-    }, [computers])
+    }, [laptops])
 
    return (
         <Container maxWidth="xl" sx={{marginTop: "10px", paddingTop: "10px"}} style={{minHeight: "100vh"}}>
@@ -50,10 +51,10 @@ const Computers = () => {
                         roles && roles.includes("ROLE_ADMIN") &&
                         <div>
                             <Button onClick={e => setOpen(true)} sx={{border: "1px solid blue", borderRadius: "2px"}}>
-                                Додати комп'ютер
+                                Додати ноутбук
                             </Button>
                             <MyModal open={open} setOpen={setOpen}
-                                     children={<AddComputerForm setComputers={setComputers} setOpen={setOpen}/>}/>
+                                     children={<AddLaptopForm setLaptops={setLaptops} setOpen={setOpen}/>}/>
                         </div>
                     }
                 </div>
@@ -81,7 +82,7 @@ const Computers = () => {
             </div>
             <div>
                 <div>
-                    <ComputersList computers={computers.slice(((page - 1) * size), (page * size))} isLoading={isLoading}/>
+                    <LaptopsList laptops={laptops.slice(((page - 1) * size), (page * size))} isLoading={isLoading}/>
                 </div>
                 <div style={{display: "flex", justifyContent: "center"}}>
                     <Pagination count={Math.ceil(allPage / size)} page={page}
@@ -93,4 +94,4 @@ const Computers = () => {
     );
 };
 
-export default Computers;
+export default Laptops;

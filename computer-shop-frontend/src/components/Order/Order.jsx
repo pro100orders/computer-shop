@@ -1,7 +1,13 @@
-import React from 'react';
-import {Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {Button, Typography} from "@mui/material";
+import MyModal from "../UI/Modal/MyModal";
+import EditComputerForm from "../Computers/EditComputerForm/EditComputerForm";
+import EditOrder from "../Admin/EditOrder/EditOrder";
 
-const Order = ({order}) => {
+const Order = ({order, orders, setOrders}) => {
+
+    const [open, setOpen] = useState(false);
+
     return (
         <div style={{
             border: "1px solid green",
@@ -9,6 +15,11 @@ const Order = ({order}) => {
             margin: 2,
             padding: 10
         }}>
+            {
+                open &&
+                <MyModal open={open} setOpen={setOpen}
+                         children={<EditOrder order={order} setOpen={setOpen} orders={orders} setOrders={setOrders}/>}/>
+            }
             <div style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -56,6 +67,14 @@ const Order = ({order}) => {
                     }
                 </Typography>
             </div>
+            {
+                orders &&
+                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                    <Button variant="contained" color="warning" onClick={() => setOpen(true)}>
+                        Редагувати
+                    </Button>
+                </div>
+            }
         </div>
     );
 };

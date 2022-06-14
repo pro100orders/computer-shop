@@ -4,9 +4,9 @@ import {Controller, useForm, useFormState} from "react-hook-form";
 import {toastr} from "react-redux-toastr";
 import {Button, MenuItem, Select, TextField} from "@mui/material";
 
-import './AddComputerForm.scss';
+import './AddLaptopForm.scss';
 
-const AddComputerForm = ({setComputers, setOpen}) => {
+const AddLaptopForm = ({setLaptops, setOpen}) => {
 
     const {handleSubmit, control, setValue} = useForm({
         mode: 'onBlur'
@@ -21,7 +21,7 @@ const AddComputerForm = ({setComputers, setOpen}) => {
     const [driveTypes, setDriveTypes] = useState([]);
 
     useEffect(() => {
-        $api.get("/computers/video-card-types")
+        $api.get("/laptops/video-card-types")
             .then(response => {
                 setVideoCardTypes(response.data);
             })
@@ -31,7 +31,7 @@ const AddComputerForm = ({setComputers, setOpen}) => {
     }, []);
 
     useEffect(() => {
-        $api.get("/computers/video-card-type-memories")
+        $api.get("/laptops/video-card-type-memories")
             .then(response => {
                 setVideoCardTypeMemoryes(response.data);
             })
@@ -41,7 +41,7 @@ const AddComputerForm = ({setComputers, setOpen}) => {
     }, []);
 
     useEffect(() => {
-        $api.get("/computers/ram-types")
+        $api.get("/laptops/ram-types")
             .then(response => {
                 setRamTypes(response.data);
             })
@@ -51,7 +51,7 @@ const AddComputerForm = ({setComputers, setOpen}) => {
     }, []);
 
     useEffect(() => {
-        $api.get("/computers/drive-types")
+        $api.get("/laptops/drive-types")
             .then(response => {
                 setDriveTypes(response.data);
             })
@@ -60,23 +60,23 @@ const AddComputerForm = ({setComputers, setOpen}) => {
             });
     }, []);
 
-    const onSubmit = (computer) => {
-        console.log(computer);
-        $api.post("/computers", computer)
+    const onSubmit = (laptop) => {
+        console.log(laptop);
+        $api.post("/laptops", laptop)
             .then(response => {
                 if (file != null) {
                     const fd = new FormData();
                     fd.append("image", file, file.name);
-                    $api.post("/computers/image/" + response.data.id, fd)
+                    $api.post("/laptops/image/" + response.data.id, fd)
                         .then(response1 => {
-                            setComputers(prevState => [...prevState, response1.data]);
+                            setLaptops(prevState => [...prevState, response1.data]);
                             setOpen(false);
                         })
                         .catch(reason => {
                             console.log(reason.response.data.error);
                         })
                 } else {
-                    setComputers(prevState => [...prevState, response.data]);
+                    setLaptops(prevState => [...prevState, response.data]);
                     setOpen(false);
                 }
             })
@@ -92,7 +92,7 @@ const AddComputerForm = ({setComputers, setOpen}) => {
     }
 
     return (
-        <div className='add-book-form' style={{width: "960px"}}>
+        <div className='add-book-form' style={{width: "1300px"}}>
             <form className="add-book-form__form" onSubmit={handleSubmit(onSubmit)}
                   style={{display: "flex", flexWrap: "wrap"}}>
                 <div className={"formInput"}>
@@ -222,27 +222,6 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                                 onChange={(e) => field.onChange(e)}
                                 error={!!errors.processorAmountCores?.message}
                                 helperText={errors.processorAmountCores?.message}
-                            />
-                        )}
-                    />
-                </div>
-                <div className={"formInput"}>
-                    <Controller
-                        control={control}
-                        name="processorFrequency"
-                        render={({field}) => (
-                            <TextField
-                                label="Тактова частота"
-                                type="number"
-                                size="small"
-                                margin="normal"
-                                className="add-book-form__input"
-                                fullWidth={true}
-                                value={field.value}
-                                variant={"filled"}
-                                onChange={(e) => field.onChange(e)}
-                                error={!!errors.processorFrequency?.message}
-                                helperText={errors.processorFrequency?.message}
                             />
                         )}
                     />
@@ -407,30 +386,10 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                 <div className={"formInput"}>
                     <Controller
                         control={control}
-                        name="motherboard"
+                        name="displayDiagonal"
                         render={({field}) => (
                             <TextField
-                                label="Материнська плата"
-                                size="small"
-                                margin="normal"
-                                className="add-book-form__input"
-                                fullWidth={true}
-                                value={field.value}
-                                variant={"filled"}
-                                onChange={(e) => field.onChange(e)}
-                                error={!!errors.motherboard?.message}
-                                helperText={errors.motherboard?.message}
-                            />
-                        )}
-                    />
-                </div>
-                <div className={"formInput"}>
-                    <Controller
-                        control={control}
-                        name="motherboardMemorySlots"
-                        render={({field}) => (
-                            <TextField
-                                label="Макс. кількість слотів пам'яті на материнці"
+                                label="Діагональ дисплея"
                                 type="number"
                                 size="small"
                                 margin="normal"
@@ -439,8 +398,8 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                                 value={field.value}
                                 variant={"filled"}
                                 onChange={(e) => field.onChange(e)}
-                                error={!!errors.motherboardMemorySlots?.message}
-                                helperText={errors.motherboardMemorySlots?.message}
+                                error={!!errors.displayDiagonal?.message}
+                                helperText={errors.displayDiagonal?.message}
                             />
                         )}
                     />
@@ -448,10 +407,50 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                 <div className={"formInput"}>
                     <Controller
                         control={control}
-                        name="motherboardMaxAmountMemory"
+                        name="displayResolution"
                         render={({field}) => (
                             <TextField
-                                label="Макс. обсяг пам'яті на материнці"
+                                label="Дозвіл дисплея"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.displayResolution?.message}
+                                helperText={errors.displayResolution?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="displayMatrixType"
+                        render={({field}) => (
+                            <TextField
+                                label="Тип матриці дисплея"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.displayMatrixType?.message}
+                                helperText={errors.displayMatrixType?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="displayFrequency"
+                        render={({field}) => (
+                            <TextField
+                                label="Частота оновлення дисплея"
                                 type="number"
                                 size="small"
                                 margin="normal"
@@ -460,8 +459,48 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                                 value={field.value}
                                 variant={"filled"}
                                 onChange={(e) => field.onChange(e)}
-                                error={!!errors.motherboardMaxAmountMemory?.message}
-                                helperText={errors.motherboardMaxAmountMemory?.message}
+                                error={!!errors.displayFrequency?.message}
+                                helperText={errors.displayFrequency?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="displayCoverage"
+                        render={({field}) => (
+                            <TextField
+                                label="Покриття дислея"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.displayCoverage?.message}
+                                helperText={errors.displayCoverage?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="displayInformation"
+                        render={({field}) => (
+                            <TextField
+                                label="Додатково про дисплей"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.displayInformation?.message}
+                                helperText={errors.displayInformation?.message}
                             />
                         )}
                     />
@@ -531,6 +570,68 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                                     )
                                 }
                             </Select>
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="ramSlots"
+                        render={({field}) => (
+                            <TextField
+                                label="Кількість слотів оперативної пам'яті"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.ramSlots?.message}
+                                helperText={errors.ramSlots?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="ramMax"
+                        render={({field}) => (
+                            <TextField
+                                label="Макс. підтримуваний обсяг оперативної пам'яті"
+                                type="number"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.ramMax?.message}
+                                helperText={errors.ramMax?.message}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={"formInput"}>
+                    <Controller
+                        control={control}
+                        name="ramInformation"
+                        render={({field}) => (
+                            <TextField
+                                label="Додатково про оперативну пам'ять"
+                                size="small"
+                                margin="normal"
+                                className="add-book-form__input"
+                                fullWidth={true}
+                                value={field.value}
+                                variant={"filled"}
+                                onChange={(e) => field.onChange(e)}
+                                error={!!errors.ramInformation?.message}
+                                helperText={errors.ramInformation?.message}
+                            />
                         )}
                     />
                 </div>
@@ -654,11 +755,11 @@ const AddComputerForm = ({setComputers, setOpen}) => {
                         marginTop: 2
                     }}
                 >
-                    Додати комп'ютер
+                    Додати ноутбук
                 </Button>
             </form>
         </div>
     );
 };
 
-export default AddComputerForm;
+export default AddLaptopForm;

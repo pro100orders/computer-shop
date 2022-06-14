@@ -67,7 +67,7 @@ public class Laptop extends Product implements Serializable {
     private String displayMatrixType;
 
     @Column(name = "display_frequency")//Частота оновлення
-    private String displayFrequency;
+    private double displayFrequency;
 
     @Column(name = "display_coverage")//Покриття
     private String displayCoverage;
@@ -78,24 +78,24 @@ public class Laptop extends Product implements Serializable {
 
 
     //Оперативна пам'ять
-    @Column(name = "RAM_volume")//Обсяг
-    private int RAMVolume;
+    @Column(name = "ram_volume")//Обсяг
+    private int ramVolume;
 
-    @Column(name = "RAM_frequency")//Частота
-    private double RAMFrequency;
+    @Column(name = "ram_frequency")//Частота
+    private double ramFrequency;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "RAM_type")//Тип
-    private RAMTypes RAMType;
+    @Column(name = "ram_type")//Тип
+    private RAMTypes ramType;
 
-    @Column(name = "RAM_slots")//Кількість слотів
-    private int RAMSlots;
+    @Column(name = "ram_slots")//Кількість слотів
+    private int ramSlots;
 
-    @Column(name = "RAM_max")//Максимальний підтримуваний обсяг
-    private int RAMMax;
+    @Column(name = "ram_max")//Максимальний підтримуваний обсяг
+    private int ramMax;
 
-    @Column(name = "RAM_information")//Додатково
-    private String RAMInformation;
+    @Column(name = "ram_information")//Додатково
+    private String ramInformation;
 
 
 

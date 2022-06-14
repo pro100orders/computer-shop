@@ -9,6 +9,9 @@ import ComputerDetails from "../components/Computers/ComputerDetails/ComputerDet
 import LoginForm from "../components/LoginForm/LoginForm";
 import RegistrationForm from "../components/RegistrationForm/RegistrationForm";
 import Orders from "../pages/Orders/Orders";
+import Laptops from "../pages/Laptops/Laptops";
+import LaptopDetails from "../components/Laptops/LaptopDetails/LaptopDetails";
+import Admin from "../pages/Admin/Admin";
 
 const AppRoutes = () => {
 
@@ -21,6 +24,8 @@ const AppRoutes = () => {
             {path: "/", component: Home},
             {path: "/computers", component: Computers},
             {path: "/computers/:id", component: ComputerDetails},
+            {path: "/laptops", component: Laptops},
+            {path: "/laptops/:id", component: LaptopDetails},
         ]);
 
         if (roles && roles.includes("ROLE_GUEST")) {
@@ -45,7 +50,7 @@ const AppRoutes = () => {
 
         if (roles && roles.includes("ROLE_ADMIN")) {
             const adminRoutes = [
-                {path: "/admin", component: Home},
+                {path: "/admin", component: Admin},
             ];
 
             setRoutes(routes => routes = routes.concat(adminRoutes));
