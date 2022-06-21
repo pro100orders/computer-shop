@@ -3,8 +3,6 @@ package com.pro100user.computershopbackend.dto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor

@@ -79,7 +79,8 @@ const ComputerDetails = () => {
                         </Typography>
                         <div style={{display: "flex"}}>
                             <div>
-                                <img src={"http://localhost:8080/files/" + computer.image} alt={computer.name}/>
+                                <img src={"http://localhost:8080/files/" + computer.image} alt={computer.name}
+                                     style={{maxWidth: 500}}/>
                             </div>
                             <div style={{border: "1px solid green", padding: 20}}>
                                 <Typography variant="h6" component="div">

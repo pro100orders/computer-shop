@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -78,5 +80,28 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public long getCount() {
         return productRepository.getCount();
+    }
+
+    @Override
+    public List<ProductDTO> reporting(Long report) {
+        List<Product> products = productRepository.findAll();
+        if(report == 1) {
+            products = products.stream().sorted(Comparator.comparingInt(o -> -o.getOrders().size())).toList();
+        }
+        else if(report == 2) {
+            products = products.stream().sorted(Comparator.comparingInt(o -> o.getOrders().size())).toList();
+        }
+        else if(report == 3) {
+            products = products.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).toList();
+        }
+        else if(report == 4) {
+            products = products.stream().sorted(Comparator.comparing(Product::getPrice)).toList();
+        }
+        else if(report == 5) {
+            products = products.stream().sorted(Comparator.comparing(Product::getAmount)).toList();
+        }
+        return productMapper.toProductDTO(
+                products
+        );
     }
 }

@@ -2,8 +2,11 @@ package com.pro100user.computershopbackend.controller;
 
 import com.pro100user.computershopbackend.dto.OrderDTO;
 import com.pro100user.computershopbackend.dto.OrderUpdateDTO;
+import com.pro100user.computershopbackend.dto.ProductDTO;
 import com.pro100user.computershopbackend.entity.enums.Status;
+import com.pro100user.computershopbackend.mapper.ProductMapper;
 import com.pro100user.computershopbackend.service.OrderService;
+import com.pro100user.computershopbackend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import java.util.List;
 public class AdminController {
 
     private final OrderService orderService;
+    private final ProductService productService;
 
     @GetMapping("/orders")
     public List<OrderDTO> orders() {
@@ -50,5 +54,10 @@ public class AdminController {
         return Arrays.stream(Status.values())
                 .map(Enum::name)
                 .toList();
+    }
+
+    @GetMapping("/reporting/{report}")
+    public List<ProductDTO> reporting(@PathVariable("report") Long report) {
+        return productService.reporting(report);
     }
 }

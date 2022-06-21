@@ -18,4 +18,5 @@ public interface ProductService {
     ProductDTO setPhoto(MultipartFile file, Long productId);
 
     long getCount();
+    List<ProductDTO> reporting(Long report);
 }
