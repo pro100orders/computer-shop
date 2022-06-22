@@ -49,7 +49,7 @@ const Header = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        Computer-shop
+                        BuyComp
                     </Typography>
                     <div style={{width: "50%"}}>
                         <div style={{display: "flex"}}>
