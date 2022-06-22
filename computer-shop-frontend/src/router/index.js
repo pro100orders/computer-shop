@@ -21,7 +21,7 @@ const AppRoutes = () => {
 
     useEffect(() => {
         setRoutes([
-            {path: "/", component: Home},
+            {path: "/", component: Computers},
             {path: "/computers", component: Computers},
             {path: "/computers/:id", component: ComputerDetails},
             {path: "/laptops", component: Laptops},
